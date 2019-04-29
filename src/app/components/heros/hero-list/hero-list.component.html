@@ -1,0 +1,45 @@
+<h1>Heroes</h1>
+<hr>
+<div class="row">
+   <div class="col-md-12 text-right mb-4">
+      <button [routerLink]="[herosUrl.ADD]" type="button" class="btn btn-outline-primary" type="button" name="button">
+         Add Hero
+      </button>
+   </div>
+</div>
+<!-- <app-loading *ngIf="loading"></app-loading> -->
+<div *ngIf="!loading" class="row animated fadeIn">
+   <div class="col-md-12">
+      <div class="table-responsive">
+         <table class="table table-sm table-hover">
+            <thead class="thead-dark">
+               <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Company</th>
+                  <th scope="col" class="text-right">Options</th>
+               </tr>
+            </thead>
+            <tbody>
+               <tr *ngFor="let h of heros | objectKey; let i = index">
+                  <td scope="col">{{i+1}}</td>
+                  <td scope="col">{{ heros[h].name }}</td>
+                  <td scope="col">{{ heros[h].universe.name }}</td>
+                  <td class="text-right">
+                     <button [routerLink]="[herosUrl.ADD, h]" type="button" class="btn btn-outline-success"
+                        type="button" name="button">
+                        <i class="fas fa-edit"></i>
+                        Editar
+                     </button>&nbsp;&nbsp;
+                     <button (click)="deleteHero(h)" type="button" class="btn btn-outline-danger" type="button"
+                        name="button">
+                        <i class="fas fa-trash-alt"></i> 
+                        Eliminar
+                     </button>
+                  </td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+   </div>
+</div>
