@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HEROES_URL } from '../../../shared/constants/url';
 import { HeroService } from '../../../shared/services/hero.service';
+import { Observable } from 'rxjs/internal/Observable';
 import { Hero } from '../../../shared/interfaces/hero.interface';
 
 @Component({
@@ -10,30 +11,22 @@ import { Hero } from '../../../shared/interfaces/hero.interface';
 })
 export class HeroListComponent implements OnInit {
   herosUrl: any = HEROES_URL;
-  heros: Hero[] = [];
+  heros: Observable<Hero[]>;
 
-  constructor(
-    private heroService: HeroService
-  ) { }
+  constructor(public heroService: HeroService) {
+    this.heros = this.heroService.heros$;
+  }
 
   ngOnInit() {
     this.getHeros();
   }
 
   getHeros(): void {
-    this.heroService.getHeros()
-      .subscribe((response: Hero[]) => {
-        this.heros = response;
-      });
+    this.heroService.getHeros();
   }
 
   deleteHero(key$: string): void {
-    this.heroService.deleteHero(key$)
-      .subscribe((response: any) => {
-        if (!response) {
-          delete this.heros[key$];
-        }
-      });
+    this.heroService.deleteHero(key$).subscribe();
   }
 
 }

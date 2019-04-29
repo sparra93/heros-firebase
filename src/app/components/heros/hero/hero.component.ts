@@ -18,6 +18,7 @@ export class HeroComponent implements OnInit {
    herosUrl: any = HEROES_URL;
    isEditing: boolean;
    key$: string;
+   saving: boolean;
 
    constructor(
       private heroService: HeroService,
@@ -26,18 +27,20 @@ export class HeroComponent implements OnInit {
    ) { }
 
    ngOnInit() {
-      this.initData();
       this.activatedRouter.params.subscribe((params) => {
          if (params.id) {
             this.getHero(params.id);
             this.key$ = params.id;
             this.isEditing = true;
+         } else {
+            this.initData();
          }
       });
    }
 
    saveHero(): void {
       const hero: any = this.formGroup.value;
+      this.saving = true;
       if (this.isEditing) {
          this.editHero(hero, this.key$);
       } else {
@@ -48,7 +51,8 @@ export class HeroComponent implements OnInit {
    getHero(key$: string): void {
       this.heroService.getHero(key$)
          .subscribe((response: any) => {
-            this.formGroup.patchValue({ name: response.name, universe: response.universe });
+            const { name, universe } = response;
+            this.initData(name, universe);
          });
    }
 
@@ -56,19 +60,20 @@ export class HeroComponent implements OnInit {
       return (value1 && value2) ? value1.name === value2.name : value1 === value2;
    }
 
-   private initData(): void {
+   private initData(name = '', universe = ''): void {
       this.formGroup = new FormGroup(
          {
-            name: new FormControl('', Validators.required),
-            universe: new FormControl('', Validators.required)
+            name: new FormControl(name, Validators.required),
+            universe: new FormControl(universe, Validators.required)
          }
       );
    }
 
    private addHero(hero: any): void {
       this.heroService.addHero(hero)
-         .subscribe(() => {
+         .subscribe((response) => {
             this.router.navigate([HEROES_URL.LIST]);
+            this.saving = false;
          });
    }
 
@@ -76,6 +81,7 @@ export class HeroComponent implements OnInit {
       this.heroService.updateHero(hero, key$)
          .subscribe((response: any) => {
             this.router.navigate([HEROES_URL.LIST]);
+            this.saving = false;
          });
    }
 

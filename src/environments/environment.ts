@@ -4,7 +4,14 @@
 
 export const environment = {
    production: false,
-   api_url: 'YOUR URL FIREBASE HERE'
+   firebase: {
+      apiKey: 'API KEY HERE',
+      authDomain: 'YOUR_PROYECT_ID.firebaseapp.com',
+      databaseURL: 'https://YOUR_PROYECT_ID.firebaseio.com',
+      projectId: 'YOUR_PROYECT_ID',
+      storageBucket: 'YOUR_PROYECT_ID.appspot.com',
+      messagingSenderId: 'YOUR MESSAGING ID'
+   }
 };
 
 /*

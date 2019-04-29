@@ -1,20 +1,39 @@
-<button class="btn btn-outline-danger mr-2" [routerLink]="[herosUrl.LIST]">Regresar</button>
+<button class="btn btn-primary btn-sm mr-2" [routerLink]="[herosUrl.LIST]">
+   <i class="fas fa-chevron-circle-left"></i>
+   Regresar
+</button>
 <hr>
-
 <div class="row animated fadeIn fast">
    <div class="col-md-12">
-      <form (ngSubmit)="saveHero()" [formGroup]="formGroup">
-         <div class="form-group">
-            <label for="name">Name</label>
-            <input id="name" name="name" class="form-control" formControlName="name">
+      <form (ngSubmit)="saveHero()" [formGroup]="formGroup" *ngIf="formGroup">
+         <div class="row">
+            <div class="col-md-6">
+               <div class="form-group">
+                  <label for="name">Name</label>
+                  <input id="name" name="name" class="form-control form-control-sm" formControlName="name">
+               </div>
+            </div>
+            <div class="col-md-6">
+               <div class="form-group">
+                  <label for="company">Universe</label>
+                  <select class="form-control form-control-sm" id="company" formControlName="universe"
+                     [compareWith]="compareFn">
+                     <option *ngFor="let universe of universes" [ngValue]="universe">{{universe.name}}</option>
+                  </select>
+               </div>
+            </div>
          </div>
-         <div class="form-group">
-            <label for="company">Universe</label>
-            <select class="form-control" id="company" formControlName="universe" [compareWith]="compareFn">
-               <option *ngFor="let universe of universes" [ngValue]="universe">{{universe.name}}</option>
-            </select>
+         <div class="text-right">
+            <button type="submit" class="btn btn-success btn-sm" [disabled]="formGroup.invalid">
+               <ng-container *ngIf="saving; else elseTemplate">
+                  <span *ngIf="saving" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+               </ng-container>
+               <ng-template #elseTemplate>
+                  <i class="fas fa-save"></i>
+                  Save Hero
+               </ng-template>
+            </button>
          </div>
-         <button type="submit" class="btn btn-outline-success" [disabled]="formGroup.invalid">Save</button>
       </form>
    </div>
 </div>
