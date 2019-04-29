@@ -1,27 +1,43 @@
-# Heroes
+# Heroes Firebase [CRUD]
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.7.
 
-## Development server
+# Get started
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+#### Install
 
-## Code scaffolding
+```bash
+npm install
+```
+# Set environment for DEV
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### **REALTIME DATABASE**
 
-## Build
+Does `git checkout heros-real-time-db` branch. Then, open `src/environments/environment.ts` and copy your credentials.
+```bash
+export const environment = {
+   production: false,
+   api_url: 'YOUR URL FIREBASE HERE'
+};
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+--------------------------------------------------------------------------
+### **CLOUD FIRESTORE**
+Does `git checkout heros-cloud-firestore` branch. Then, open `src/environments/environment.ts` and copy your credentials.
+```bash
+export const environment = {
+   production: false,
+   firebase: {
+      apiKey: 'API KEY HERE',
+      authDomain: 'YOUR_PROYECT_ID.firebaseapp.com',
+      databaseURL: 'https://YOUR_PROYECT_ID.firebaseio.com',
+      projectId: 'YOUR_PROYECT_ID',
+      storageBucket: 'YOUR_PROYECT_ID.appspot.com',
+      messagingSenderId: 'YOUR MESSAGING ID'
+   }
+};
+```
 
-## Running unit tests
+# Run Server
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Run `ng serve -o` or `npm start` for a dev server. Navigate to `http://localhost:4200/`
