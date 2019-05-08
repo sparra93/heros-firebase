@@ -4,6 +4,7 @@
 
 export const environment = {
    production: false,
+   api_url: 'YOUR URL FIREBASE HERE', // Only in realtimedb
    firebase: {
       apiKey: 'API KEY HERE',
       authDomain: 'YOUR_PROYECT_ID.firebaseapp.com',
