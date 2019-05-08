@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ObjectKeyPipe } from './pipes/object-key.pipe';
+import { LoadingComponent } from './layouts/loading/loading.component';
 
 @NgModule({
    imports: [
@@ -12,13 +13,15 @@ import { ObjectKeyPipe } from './pipes/object-key.pipe';
       RouterModule
    ],
    declarations: [
-      ObjectKeyPipe
+      ObjectKeyPipe,
+      LoadingComponent
    ],
    exports: [
       CommonModule,
       FormsModule,
       ReactiveFormsModule,
-      ObjectKeyPipe
+      ObjectKeyPipe,
+      LoadingComponent
    ]
 })
 export class SharedModule { }

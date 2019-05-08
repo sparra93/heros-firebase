@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection, DocumentChangeAction } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreCollection, DocumentChangeAction, QuerySnapshot } from '@angular/fire/firestore';
 import { Hero } from '../interfaces/hero.interface';
 import { ApiService } from './api.service';
 import { HEROES_API_REST } from '../constants/url';
@@ -16,23 +16,13 @@ export class HeroService {
    public heros$ = this.herosSource.asObservable();
 
    constructor(
-      private apiService: ApiService,
       private afs: AngularFirestore
    ) {
       this.initSourceHero();
    }
 
-   getHeros(): void {
-      this.heroObs.pipe(
-         map((actions): Hero[] => {
-            return actions.map(doc => {
-               const data: Hero = doc.payload.doc.data() as Hero;
-               return { key$: doc.payload.doc.id, ...data };
-            });
-         })
-      ).subscribe((response) => {
-         this.herosSource.next(response);
-      });
+   getHeros() {
+      this.getHerosFromServer();
    }
 
    getHero(key$: string) {
@@ -55,11 +45,42 @@ export class HeroService {
       return from(this.herosCollection.doc(key$).delete());
    }
 
+   queryHerosByName(query: string) {
+      let queryObs = from(this.herosCollection.ref.where('name', '==', query).get());
+      queryObs.pipe(
+         map((querySnapshot: QuerySnapshot<Hero>): Hero[] => {
+            return this.fillHeros(querySnapshot);
+         })
+      ).subscribe((heros: Hero[]) => {
+         this.herosSource.next(heros);
+      });
+   }
+
    private initSourceHero(): void {
       if (!this.heroObs) {
          this.herosCollection = this.afs.collection<Hero>('heros');
          this.heroObs = this.herosCollection.snapshotChanges();
       }
+   }
+   
+   private getHerosFromServer() {
+      this.herosCollection = this.afs.collection<Hero>('heros');
+      this.herosCollection
+         .get()
+         .pipe(
+            map((querySnapshot: QuerySnapshot<Hero>): Hero[] => {
+               return this.fillHeros(querySnapshot);
+            })
+         ).subscribe((heros: Hero[]) => {
+            this.herosSource.next(heros);
+         });
+   }
+
+   private fillHeros(querySnapshot: QuerySnapshot<Hero>): Hero[] {
+      return querySnapshot.docs.map(doc => {
+         const data: Hero = doc.data() as Hero;
+         return { key$: doc.id, ...data };
+      });
    }
 
 }

@@ -71,7 +71,7 @@ export class HeroComponent implements OnInit {
 
    private addHero(hero: any): void {
       this.heroService.addHero(hero)
-         .subscribe((response) => {
+         .subscribe(() => {
             this.router.navigate([HEROES_URL.LIST]);
             this.saving = false;
          });
@@ -79,7 +79,7 @@ export class HeroComponent implements OnInit {
 
    private editHero(hero: any, key$: string): void {
       this.heroService.updateHero(hero, key$)
-         .subscribe((response: any) => {
+         .subscribe(() => {
             this.router.navigate([HEROES_URL.LIST]);
             this.saving = false;
          });
